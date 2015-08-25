@@ -14,7 +14,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:text="You"
-                android:textSize="16sp"
+                android:textSize="12sp"
                 android:singleLine="true"
                 android:layout_alignParentLeft="true"
                 android:paddingLeft="10dp"
@@ -30,7 +30,7 @@
                 android:paddingRight="2dp"
                 android:paddingBottom="6dp"
                 android:textSize="12sp"
-                android:text="Aug 24 13:10"
+                android:text=""
                 android:layout_alignBottom="@+id/txtSender"/>
 
         <RelativeLayout
@@ -39,7 +39,7 @@
                 android:layout_below="@+id/txtSender"
                 android:layout_alignParentLeft="true"
                 android:padding="12dp"
-                android:background="@color/dark_gray"
+                android:background="@color/nice_gray"
                 >
 
             <TextView
@@ -47,6 +47,7 @@
                     android:paddingLeft="12dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
                     android:textColor="@android:color/black"
                     android:textSize="14sp"
                     android:text="Hello"

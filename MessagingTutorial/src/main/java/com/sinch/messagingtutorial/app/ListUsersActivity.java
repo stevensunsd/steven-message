@@ -3,11 +3,8 @@ package com.sinch.messagingtutorial.app;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -30,21 +27,16 @@ public class ListUsersActivity extends Activity {
     private ArrayList<String> names;
     private ListView usersListView;
     private Button logoutButton;
-    private ProgressDialog progressDialog;
-    private BroadcastReceiver receiver = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_users);
 
-        showSpinner();
-
         logoutButton = (Button) findViewById(R.id.logoutButton);
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                stopService(new Intent(getApplicationContext(), MessageService.class));
                 ParseUser.logOut();
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent);
@@ -93,39 +85,18 @@ public class ListUsersActivity extends Activity {
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereEqualTo("username", names.get(pos));
         query.findInBackground(new FindCallback<ParseUser>() {
-           public void done(List<ParseUser> user, com.parse.ParseException e) {
-               if (e == null) {
-                   Intent intent = new Intent(getApplicationContext(), MessagingActivity.class);
-                   intent.putExtra("RECIPIENT_ID", user.get(0).getObjectId());
-                   startActivity(intent);
-               } else {
-                   Toast.makeText(getApplicationContext(),
-                       "Error finding that user",
-                           Toast.LENGTH_SHORT).show();
-               }
-           }
-        });
-    }
-
-    //show a loading spinner while the sinch client starts
-    private void showSpinner() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Loading");
-        progressDialog.setMessage("Please wait...");
-        progressDialog.show();
-
-        receiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                Boolean success = intent.getBooleanExtra("success", false);
-                progressDialog.dismiss();
-                if (!success) {
-                    Toast.makeText(getApplicationContext(), "Messaging service failed to start", Toast.LENGTH_LONG).show();
+            public void done(List<ParseUser> user, com.parse.ParseException e) {
+                if (e == null) {
+                    Intent intent = new Intent(getApplicationContext(), MessagingActivity.class);
+                    intent.putExtra("RECIPIENT_ID", user.get(0).getObjectId());
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            "Error finding that user",
+                            Toast.LENGTH_SHORT).show();
                 }
             }
-        };
-
-        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter("com.sinch.messagingtutorial.app.ListUsersActivity"));
+        });
     }
 
     @Override

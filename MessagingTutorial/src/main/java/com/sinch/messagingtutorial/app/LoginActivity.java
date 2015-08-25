@@ -23,20 +23,18 @@ public class LoginActivity extends Activity {
     private String username;
     private String password;
     private Intent intent;
-    private Intent serviceIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         intent = new Intent(getApplicationContext(), ListUsersActivity.class);
-        serviceIntent = new Intent(getApplicationContext(), MessageService.class);
 
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        if (currentUser != null) {
-            startActivity(intent);
-            startService(serviceIntent);
-        }
+//        ParseUser currentUser = ParseUser.getCurrentUser();
+//        if (currentUser != null) {
+//            startActivity(intent);
+//            startService(serviceIntent);
+//        }
 
         setContentView(R.layout.activity_login);
 
@@ -55,7 +53,6 @@ public class LoginActivity extends Activity {
                     public void done(ParseUser user, com.parse.ParseException e) {
                         if (user != null) {
                             startActivity(intent);
-                            startService(serviceIntent);
                         } else {
                             Toast.makeText(getApplicationContext(),
                                 "Wrong username/password combo",
@@ -81,7 +78,6 @@ public class LoginActivity extends Activity {
                     public void done(com.parse.ParseException e) {
                         if (e == null) {
                             startActivity(intent);
-                            startService(serviceIntent);
                         } else {
                             Toast.makeText(getApplicationContext(),
                                 "There was an error signing up."
@@ -91,11 +87,5 @@ public class LoginActivity extends Activity {
                 });
             }
         });
-    }
-
-    @Override
-    public void onDestroy() {
-        stopService(new Intent(this, MessageService.class));
-        super.onDestroy();
     }
 }

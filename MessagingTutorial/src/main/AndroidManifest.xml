@@ -24,7 +24,6 @@
             android:name=".ListUsersActivity"
             android:screenOrientation="portrait">
         </activity>
-        <service android:name=".MessageService"></service>
         <activity android:name=".MessagingActivity"
                   android:screenOrientation="portrait">
         </activity>

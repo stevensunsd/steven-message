@@ -8,8 +8,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.parse.GetCallback;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.sinch.android.rtc.messaging.WritableMessage;
-
+import com.parse.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
