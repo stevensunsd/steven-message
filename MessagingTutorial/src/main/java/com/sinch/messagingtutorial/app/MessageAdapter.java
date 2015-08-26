@@ -80,6 +80,9 @@ public class MessageAdapter extends BaseAdapter {
         TextView txtMessage = (TextView) convertView.findViewById(R.id.txtMessage);
         txtMessage.setText(message.getTextBody());
 
+        TextView txtDate= (TextView) convertView.findViewById(R.id.txtDate);
+        txtDate.setText(message.getHeaders().get("date"));
+
         return convertView;
     }
 }

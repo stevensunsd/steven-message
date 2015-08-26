@@ -16,8 +16,12 @@ import com.parse.SaveCallback;
 import com.sinch.android.rtc.messaging.WritableMessage;
 
 import com.parse.ParseException;
+
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -55,6 +59,7 @@ public class MessagingActivity extends Activity {
                         if (e == null) {
                             for (ParseObject o : list) {
                                 WritableMessage message = new WritableMessage(o.get("recipientId").toString(), o.get("messageText").toString());
+                                message.addHeader("date",currentTimeString(o.getCreatedAt()));
                                 messageAdapter.addMessage(message, MessageAdapter.DIRECTION_INCOMING);
                                 o.put("new", false);
                                 o.saveInBackground();
@@ -91,6 +96,7 @@ public class MessagingActivity extends Activity {
                         messageList.get(i).put("new", false);
                         messageList.get(i).saveInBackground();
                         WritableMessage message = new WritableMessage(messageList.get(i).get("recipientId").toString(), messageList.get(i).get("messageText").toString());
+                        message.addHeader("date",currentTimeString(messageList.get(i).getCreatedAt()));
                         if (messageList.get(i).get("senderId").toString().equals(currentUserId)) {
                             messageAdapter.addMessage(message, MessageAdapter.DIRECTION_OUTGOING);
                         } else {
@@ -121,9 +127,24 @@ public class MessagingActivity extends Activity {
             parseMessage.put("MessageId", writableMessage.getMessageId());
             parseMessage.saveInBackground();
 
+            writableMessage.addHeader("date",currentTimeString());
             messageAdapter.addMessage(writableMessage, MessageAdapter.DIRECTION_OUTGOING);
             messageBodyField.setText("");
         }
+    }
+
+    public String currentTimeString() {
+        Date currentTime = new Date(System.currentTimeMillis());
+        SimpleDateFormat df =new SimpleDateFormat("MMM dd HH:mm a");
+        df.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
+        return df.format(currentTime);
+    }
+
+    public String currentTimeString(Date date) {
+        Date currentTime = date;
+        SimpleDateFormat df =new SimpleDateFormat("MMM dd HH:mm a");
+        df.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
+        return df.format(currentTime);
     }
 }
 
